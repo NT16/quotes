@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
+import Alert from 'react-bootstrap/Alert'
 
 function AddQuote({ config, dispatch }) {
     const [quote, setQuote] = useState('');
     const [by, setBy] = useState('');
+    const [saved, setSaved] = useState(false);
 
     function submit(event) {
         event.preventDefault();
+        setSaved(false);
 
         let obj = { text: quote };
 
@@ -26,7 +29,10 @@ function AddQuote({ config, dispatch }) {
                 dispatch({
                     type: 'ADD_QUOTE',
                     data: obj
-                })
+                });
+                setSaved(true);
+                setQuote('');
+                setBy('');
             }).catch(e => dispatch({
                 type: 'ERROR',
                 data: e.message
@@ -55,6 +61,12 @@ function AddQuote({ config, dispatch }) {
 
                 <button className='btn btn-primary' type='submit'>Add</button>
             </form>
+            {
+                saved &&
+                <Alert variant='success'>
+                    Quote added
+                </Alert>
+            }
         </div>
     )
 }

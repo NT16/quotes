@@ -24,12 +24,13 @@ function Login({ dispatch }) {
             });
     }
 
-    return (<>
+    return (
+    <div className='login'>
         <h2>Login</h2>
         <form onSubmit={submit}>
             <div className='form-group mb-3'>
                 <label htmlFor='email' className='form-label'>
-                    email
+                    Email
                 </label>
 
                 <input
@@ -43,7 +44,7 @@ function Login({ dispatch }) {
 
             <div className='form-group  mb-3'>
                 <label htmlFor='pw' className='form-label'>
-                    password
+                    Password
                 </label>
 
                 <input
@@ -56,7 +57,7 @@ function Login({ dispatch }) {
             </div>
             <button type='submit'>Go</button>
         </form>
-    </>
+    </div>
     );
 }
 

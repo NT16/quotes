@@ -61,3 +61,11 @@
 .error-notif{
   color: red;
 }
+
+.login {
+  width: 20%;
+}
+
+.selected {
+  color: black;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useReducer } from 'react';
-import { BrowserRouter, Route, Switch, Link, useHistory } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import {Dropdown} from 'react-bootstrap';
@@ -16,8 +16,6 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [config, setConfig] = useState({});
 
-  let history = useHistory();
-  console.log('currenmt state', state);
 
   function logout(url) {
     console.log('logout');
@@ -26,9 +24,9 @@ function App() {
       .then(res => {
         dispatch({
           type: 'LOGOUT'
-        });
+        });   
 
-        history.push('/');
+        setConfig(null); 
       }).catch(e => {
         console.log('logout fail');
         dispatch({
@@ -58,10 +56,10 @@ function App() {
             !state.token &&
             <>
               <li className="nav-item">
-                <Link to="/login" className="nav-link">Login</Link>
+                <NavLink to="/login" className="nav-link" activeClassName='selected'>Login</NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/signup" className="nav-link">Sign up</Link>
+                <NavLink to="/signup" className="nav-link" activeClassName='selected'>Sign up</NavLink>
               </li>
             </>
           }
@@ -69,13 +67,13 @@ function App() {
             state.token &&
             <>
               <li className="nav-item">
-                <Link to="/public" className="nav-link">Home</Link>
+                <NavLink to="/public" className="nav-link" activeClassName='selected'>Home</NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/me" className="nav-link" >Me</Link>
+                <NavLink to="/me" className="nav-link" activeClassName='selected'>Me</NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/add" className="nav-link">Add</Link>
+                <NavLink to="/add" className="nav-link" activeClassName='selected'>Add</NavLink>
               </li>
             </>
           }
@@ -91,13 +89,11 @@ function App() {
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item
-                      href="#/logout"
                       onClick={() => logout('/users/logout')}
                     >
                       Logout
                   </Dropdown.Item>
                     <Dropdown.Item
-                      href="#/logoutall"
                       onClick={() => logout('/users/logoutAll')}>
                       Logout All
                       </Dropdown.Item>
@@ -113,6 +109,11 @@ function App() {
           state.error && <div className='error-notif'>Error:  {state.error}</div>
         }
         </div>
+        
+        {
+          config === null && 
+          <Redirect to='/login'></Redirect>
+        }
 
         <Switch>
           <Route path="/add">
@@ -127,8 +128,11 @@ function App() {
           <Route path="/signup" >
             <SignUp dispatch={dispatch} />
           </Route>
-          <Route path="/" >
+          <Route path="/login" >
             <Login dispatch={dispatch} />
+          </Route>
+          <Route path="/">
+            <Redirect to='/login'></Redirect>
           </Route>
         </Switch>
       </BrowserRouter>

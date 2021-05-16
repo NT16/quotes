@@ -7,7 +7,7 @@ function Quote({ quote }) {
                     <footer className="blockquote-footer">
                         {
                             quote.by &&
-                            <p>By - {quote.by}</p>
+                            <p>{quote.by}</p>
                         }
                     </footer>
                 </blockquote>
